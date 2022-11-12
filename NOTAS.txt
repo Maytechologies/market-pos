@@ -1,0 +1,165 @@
+####--DESARROLLANDO UN SISTEMA DE VENTA Y CONTROL DE INVENTARIO
+TECNOLOGIAS UTILIZADAS HTML, PHP, MYSQL, JSCRIPT, AJAX---####
+
+**VIDEO 01 - CREAR ESTRUCTURA DE CARPETAS Y ARCHIVOS ESENCIALES, DESCARGAR ADMIN LTE 3.0.2 E IMPLEMENTAR ....(VISTO E IMPLEMENTADO)..(VIEWED)
+
+**VIDEO 02 - CREACION DE BASE DE DATOS PRIMERAS TABLAS (Categorias, Productos, Empresa, Detalles ventas, Ventas Cabecera)....(VIEWD E INSTALL)
+
+**VIDEO 03 - ADACTAR PLANTILLA ADMIN-LTE (DASHBOARD, MODULOS DE PRODUCTOS, CATEGORIAS, VENTAS, REPORTES, COMPRAS)....(VIEWD E INSTALL)
+
+**VIDEO 04 - DISEÑANDO CARDS Y VINCULARLOS CON LOS MODULOS PRINCIPALES DEL SISTEMA.(VIEWED - INSTALL)
+
+VIDEO 05 - CREANDO E IMPLEMENTANDO GRAFICOS CODIGO DE BARRAS, LISTADO DE PRODUCTOS MAS VENDIDOS, LISTADO STOK MINIMO....(VIEWED - INSTALL)
+
+VIDEO 06 - DISEÑANDO E IMPLEMENTANDO TABLAS DE "PRODUCTOS MAS VENDIDOS Y ESTOK MINIMO"....(VIEWED - INSTALL)
+
+VIDEO 07 - EXPORTAR DATOS (Categorias Y Productos) DE EXCEL A TABLAS CATEGORIAS Y PRODUCTOS DE LA BASE DE DATOS PARTE 1 ....(VIEWED - INSTALL)
+ 
+VIDEO 08 - EXPORTAR DATOS (Categorias Y Productos) DE EXCEL A TABLAS CATEGORIAS Y PRODUCTOS DE LA BASE DE DATOS PARTE 2....(VIEWED - INSTALL)
+
+VIDEO 09 - DISEÑAR TABLA DE PRODUCTOS Y CONFIGURAR EL SHOW PRODUCTOS DEL PLUGUINS DATATABLE (PRODUCTOS)...(VIEWED - INSTALL)
+
+VIDEO 10 - PERSONALIZAR PLUGING DATA TABLES  (PRODUCTOS).----(VIEWED - INSTALL).
+
+VIDEO 11 - INSTALAR Y CONFIGURARA PLUGINS BAR-CODE (PRODUCTOS)----(VIEWED - INSTALL).
+
+VIDEO 12 - INICIANDO CRUD PRODUCTOS REGISTROS DE PRODUCTOS (PRODUCTOS- CREATE - MODAL)----(VIEWED - INSTALL).
+
+VIDEO 13 - VALIDANDO FORMULARIO DE REGISTROS DE PRODUCTOS (FORMULARIO - PRODUCTOS)----(VIEWED - INSTALL).
+
+VIDEO 14 - ACTIALIZANDO STOCK DESDE DATA TABLES (PRODUCTOS)----(VIEWED - INSTALL).
+
+VIDEO 15 - ELIMINAR Y EDITAR PRODUCTOS DESDE DATA TABLES (PRODUCTOS)----(VIEWED - INSTALL).
+
+VIDEO 16 - INICIANDO MODULO DE VENTAS PARTE 1 (VENTAS).-----######
+
+ 1) Sumar cantidad al producto una vez cargado en listado de venta, (NO premitir vender mas que la existencia actual en stock)
+ 2) Restar Cantidad al producto una vez cargado en listado de venta, (NO permitir cantidad 0 ó -1).
+ 3) Eliminar producto del listado al recibir un clic en icono papelera. (****ECHO***)
+
+VIDEO 17 - MODULO DE VENTAS PARTE 2 (VENTAS)
+- Manipular productos que usen peso (cantidad * precio)
+- Se agrego un  Drow Button para utilizar 3 tipos de precio Normal, Mayor y Oferta
+- Al cambiar el tipo de precio cambia el total del items y total general de factura
+
+
+
+###----VIDEO 18 - INICIANDO MODULO DE VENTAS PARTE 3 (VENTAS)---###(VIEWED - STUDING)
+ - Se Agrega una funcion que permite aumentar solo el item de la CANTIDAD al producto en nuestro 
+   listado del datatable si este ya existe..una vez aumentada la cantidad esa variable es multiplicada
+   por su precio y se ejecuta la funcion recalcularTotales();
+
+ - Se crea una nueva funcion para mantener actualizado el numero de serie y el numero de factura
+   de venta, para ello tambien creamos las carpetas y archivos requeridos (Ajax, Controlador y Modelo)
+   de igual manera se crea en mysql un procedimiento almacenado prc_NumeroDeBoleta 
+
+ - Se crea la funcion vaciar table de items de ventas y los imputs del totales, sub-totales, iva de nuestro
+   modulo de ventas.. un reset completo de datos e información..ideal para iniciar nueva venta sin datos 
+   previos.
+
+ - Se crea una funcion para indicar que hemos recibido el efectivo exacto y no generar un valor para el vuelto
+   de esta manera se agiliza la venta y se descarta la opcion de vuelto.
+
+ - Se Genera una funcion que toma en el imput efectivo recivido y le resta el valor del total de la venta
+   esta funcion genera en el valor vuelto el total de vuelto generado.
+
+ - Se Genera la funcion PRINCIPAL DEL MODULO DE VENTAS "REALIZAR VENTAS" con esta funcion capturamos todos 
+   los items y sus datos en un Array.. enviando estos al modelo ventas que genera el llamado al procedimiento
+   almacenado 
+
+ - OBSERVACION: Se presento un problema al intentar realizar un nuevo registro masivo de datos 3 productos o
+                ó mas en las tablas cabecera_ventas y detalles ventas (Se corrigio de momento cambiando las propiedades de 
+                estos campos al NULL ya que estos datos aun no se estan ingresando en el modulo de ventas )
+
+- NOTA: se registra a ´partir de este modulo un control de versiones con GITHUB 12-11-2022
+
+ 
+
+   CONTINUAR VIDEO 18, MINUTO 22:30
+
+
+VIDEO 19 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 20 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 21 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 22 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 23 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 24 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 25 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 26 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 27 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 28 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 29 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 30 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 31 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+VIDEO 32 - --- INICIANDO CRUD CATEGORIAS --- (CATEGORIAS)..
+
+
+
+--- BENGIN ---
+DECLARE totalProductos int;
+DECLARE totalCompras float;
+DECLARE totalVentas float;
+DECLARE ganancias float;
+DECLARE productosStockMin int;
+DECLARE ventasHoy float;
+
+SET totalProductos = (SELECT COUNT(*) FROM productos p);
+SET totalCompras = (SELECT SUM(p.precio_compra_producto*p.stock_producto) FROM productos p);
+SET totalVentas = (SELECT SUM(vc.total_venta)FROM venta_cabecera vc);
+SET ganancias =(SELECT SUM(vd.total_venta) - SUM(p.precio_compra_producto * vd.cantidad) FROM venta_detalle vd INNER JOIN productos p ON vd.codigo_producto);
+
+SET productosStockMin = (SELECT *FROM productos p WHERE p.stock_producto <= p.minimo_stock_producto);
+
+SET ventasHoy = (SELECT SUM(vc.total_venta) FROM venta_cabecera vc WHERE vc.fecha_venta = curdate());
+
+
+
+SELECT IF NULL(totalProductos,0) AS totalProductos,
+       IF NULL(ROUND( totalaCompras,2),0) AS totalCompras,
+       I FNULL(ROUND(totalVentas,2),0) AS totalVentas,
+       IF NULL(ROUND(ganancias,2),0) AS ganancias,
+       IF NULL(productosStockMin,2),0) AS stockMin,
+       IF NULL(ROUND(ventasHoy,2),0) AS ventasHoy;
+
+
+
+END
+
+
+----------------------------------------------------
+----- MODAL LOANDING IMPORT FILES SWEET ALERT2 -----
+----------------------------------------------------
+
+let timerInterval
+Swal.fire({
+  title: 'Importando Archivo',
+  html: '<b style = "color:orange">Esperar por Favór </b>',
+  timer: 4000,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading()
+    const b = Swal.getHtmlContainer().querySelector('b')
+    timerInterval = setInterval(() => {
+      b.textContent = Swal.getTimerLeft()
+    }, 4000)
+  },
+  willClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  /* Read more about handling dismissals below */
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log('I was closed by the time')
+  }
+})
+
+ERROR REGISTRAR VENTAS
+Fatal error
+: Uncaught PDOException: SQLSTATE[HY000]: General error: 1364 Field 'subtotal' doesn't have a default value in C:\laragon\www\market-pos\modelos\ventas.modelo.php:32
+Stack trace:
+#0 C:\laragon\www\market-pos\modelos\ventas.modelo.php(32): PDOStatement->execute()
+#1 C:\laragon\www\market-pos\controladores\ventas.controlador.php(15): VentasModelo::mdlRegistrarVenta(Array, '00000025', '5400', 'Venta realizada...')
+#2 C:\laragon\www\market-pos\ajax\ventas.ajax.php(22): VentasControlador::ctrRegistrarVenta(Array, '00000025', '5400', 'Venta realizada...')
+#3 C:\laragon\www\market-pos\ajax\ventas.ajax.php(47): AjaxVentas->ajaxRegistrarVenta(Array, '00000025', '5400', 'Venta realizada...')
+#4 {main}
+thrown in 
